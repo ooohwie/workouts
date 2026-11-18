@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EDF1F7">
+<title>Felix bleibt stark – Home-Workout</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#EDF1F7; --paper:#FFFFFF; --ink:#16213E; --muted:#56627F;
+  --cobalt:#2E46E8; --cobalt-soft:#DCE2FB; --far:#93A0CF;
+  --done:#12A06A; --done-soft:#DDF3EA; --sun:#FFD23F; --line:#D5DCEA;
+  --round: ui-rounded, "SF Pro Rounded", "Nunito", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --text: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--text);padding-bottom:120px}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--cobalt);outline-offset:2px;border-radius:8px}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
+
+/* Hero */
+.hero{padding:34px 0 18px}
+.hello{font:700 1.15rem/1.2 var(--round);color:var(--cobalt);margin:0 0 6px}
+h1{font:800 clamp(2.4rem,11vw,3.5rem)/0.98 var(--round);letter-spacing:-0.025em;margin:0 0 16px}
+.lead{margin:0;color:var(--muted);max-width:34em}
+.week{display:flex;align-items:center;gap:14px;margin-top:22px;padding:14px 16px;background:var(--paper);border-radius:18px}
+.dots{display:flex;gap:6px}
+.dot{width:22px;height:22px;border-radius:50%;border:3px solid var(--cobalt);background:transparent}
+.dot.on{background:var(--cobalt)}
+.week p{margin:0;line-height:1.3}
+.week strong{font-family:var(--round)}
+.week small{color:var(--muted);display:block}
+
+/* Chooser */
+.choose{margin:26px 0 8px}
+.q{font:700 1rem var(--round);margin:18px 0 8px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button{border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:12px 10px;text-align:left;position:relative}
+.seg button b{display:block;font:800 1.35rem/1.1 var(--round)}
+.seg button span{font-size:.85rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{border-color:var(--cobalt);background:var(--cobalt);color:#fff}
+.seg button[aria-pressed="true"] span{color:#DCE2FB}
+.badge{position:absolute;top:-9px;right:10px;background:var(--sun);color:var(--ink);font:700 .72rem/1 var(--round);padding:4px 8px;border-radius:99px}
+
+/* Progress */
+.progress{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0 10px;margin-top:18px}
+.progress .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.progress h2{font:800 1.25rem var(--round);margin:0}
+.progress .count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.9rem;white-space:nowrap}
+.bar{height:8px;background:var(--line);border-radius:99px;margin-top:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--done);border-radius:99px;transition:width .3s}
+
+/* Exercises */
+.list{list-style:none;margin:8px 0 0;padding:0}
+.ex{background:var(--paper);border-radius:20px;margin:0 0 16px;overflow:hidden;border:2px solid transparent;transition:border-color .2s}
+.ex.done{border-color:var(--done)}
+.fig{background:var(--cobalt-soft);padding:10px 8px 4px;position:relative}
+.ex.done .fig{background:var(--done-soft)}
+.fig svg{display:block;width:100%;height:auto;max-height:190px}
+.fig .tag{position:absolute;left:12px;top:10px;font:700 .78rem var(--round);color:var(--cobalt);background:#fff;padding:3px 9px;border-radius:99px}
+.ex.done .fig .tag{color:var(--done)}
+.exb{padding:16px 16px 18px}
+.exh{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.ex h3{font:800 1.3rem/1.15 var(--round);margin:0}
+.dose{font:800 1.05rem/1.2 var(--round);color:var(--cobalt);white-space:nowrap;text-align:right}
+.dose small{display:block;font:500 .78rem var(--text);color:var(--muted)}
+.mus{margin:3px 0 12px;color:var(--muted);font-size:.9rem}
+.lv{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:0 0 10px}
+.lv button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:7px 4px;font-size:.85rem;font-weight:600}
+.lv button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.lvd{background:var(--bg);border-radius:12px;padding:10px 12px;margin:0 0 12px;font-size:.95rem}
+.lvd b{font-family:var(--round)}
+.steps{margin:0 0 10px;padding-left:1.3em}
+.steps li{margin:0 0 4px}
+.cue{margin:0 0 14px;font-size:.93rem;padding-left:12px;border-left:4px solid var(--sun)}
+.sets{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.set{min-width:54px;height:54px;border-radius:16px;border:2.5px solid var(--ink);background:#fff;font:800 1rem var(--round);display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:0 10px}
+.set[aria-pressed="true"]{background:var(--done);border-color:var(--done);color:#fff}
+.set svg{width:18px;height:18px}
+.tbtn{margin-left:auto;height:54px;border-radius:16px;border:0;background:var(--sun);font:700 .95rem var(--round);padding:0 14px;display:inline-flex;align-items:center;gap:6px}
+.tbtn svg{width:18px;height:18px}
+
+.finish{display:block;width:100%;border:0;border-radius:18px;background:var(--ink);color:#fff;font:800 1.2rem var(--round);padding:18px;margin:8px 0 0}
+.finish-note{text-align:center;color:var(--muted);font-size:.88rem;margin:8px 0 0}
+
+/* Info sections */
+.sec{margin:44px 0 0}
+.sec h2{font:800 1.6rem/1.1 var(--round);margin:0 0 12px;letter-spacing:-.01em}
+.hist{list-style:none;margin:0;padding:0;background:var(--paper);border-radius:18px;overflow:hidden}
+.hist li{display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid var(--line)}
+.hist li:first-child{border-top:0}
+.hist .w{font-weight:600}
+.hist .d{color:var(--muted);font-variant-numeric:tabular-nums}
+.empty{background:var(--paper);border-radius:18px;padding:16px;color:var(--muted);margin:0}
+.stats{display:flex;gap:10px;margin:0 0 12px}
+.stats div{flex:1;background:var(--paper);border-radius:16px;padding:12px 14px}
+.stats b{display:block;font:800 1.8rem/1 var(--round)}
+.stats span{font-size:.85rem;color:var(--muted)}
+.link{background:none;border:0;color:var(--cobalt);text-decoration:underline;padding:8px 0;font-size:.9rem}
+details{background:var(--paper);border-radius:16px;margin:0 0 10px;padding:0 16px}
+summary{font:700 1.05rem var(--round);padding:15px 0;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:1.4rem;line-height:1;color:var(--cobalt)}
+details[open] summary::after{content:"–"}
+details p{margin:0 0 12px}
+details > :last-child{margin-bottom:16px}
+.warn{border:2px solid #E5484D}
+.warn summary{color:#B4232A}
+footer{margin:40px 0 0;color:var(--muted);font-size:.85rem}
+
+/* Timer */
+.timer{position:fixed;left:0;right:0;bottom:0;z-index:20;transform:translateY(110%);transition:transform .25s;padding:0 12px calc(12px + env(safe-area-inset-bottom))}
+.timer.show{transform:none}
+.tbox{max-width:560px;margin:0 auto;background:var(--ink);color:#fff;border-radius:22px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(22,33,62,.35)}
+.tbox .lbl{font-size:.85rem;color:#B9C2E0}
+.tbox .num{font:800 2.2rem/1 var(--round);font-variant-numeric:tabular-nums}
+.tbox .grow{flex:1}
+.tbox button{border:0;border-radius:12px;padding:10px 12px;font-weight:700;background:#2B3760;color:#fff}
+.tbox button.stop{background:var(--sun);color:var(--ink)}
+.tbar{height:5px;background:#2B3760;border-radius:99px;margin-top:8px;overflow:hidden}
+.tbar i{display:block;height:100%;background:var(--sun);width:100%}
+.timer.ended .tbox{background:var(--done)}
+.timer.ended .tbox .lbl{color:#E3F7EE}
+
+.toast{position:fixed;left:50%;top:18px;transform:translate(-50%,-150%);background:var(--done);color:#fff;font:700 1rem var(--round);padding:12px 18px;border-radius:14px;z-index:30;transition:transform .3s;max-width:90vw;text-align:center}
+.toast.show{transform:translate(-50%,0)}
+
+/* figure strokes */
+.st{fill:none;stroke:var(--ink);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.st.far{stroke:var(--far)}
+.hd{fill:#fff;stroke:var(--ink);stroke-width:3.2}
+.pr{fill:none;stroke:#8C97B4;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.prf{fill:#fff;stroke:#8C97B4;stroke-width:2.2}
+.wt{fill:var(--sun);stroke:var(--ink);stroke-width:2}
+.fl{stroke:#A9B4CF;stroke-width:2;stroke-linecap:round}
+.arr{fill:none;stroke:var(--cobalt);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="hello">Hey Felix,</p>
+    <h1>Kilos runter, Muskeln bleiben.</h1>
+    <p class="lead">Die Spritze kümmert sich ums Abnehmen. Damit dabei nicht auch deine Muskeln mitschmelzen, brauchen sie einen guten Grund zu bleiben: zweimal pro Woche Krafttraining. Mehr ist das hier nicht, versprochen.</p>
+    <div class="week" id="week"></div>
+  </header>
+
+  <section class="choose" aria-label="Workout wählen">
+    <p class="q">Wie viel Zeit hast du heute?</p>
+    <div class="seg" id="segDur">
+      <button data-dur="30"><b>30 Min</b><span>Kurz und knackig</span></button>
+      <button data-dur="60"><b>60 Min</b><span>Mehr Sätze, mehr Übungen</span></button>
+    </div>
+    <p class="q">Welches Workout?</p>
+    <div class="seg" id="segVar">
+      <button data-var="A"><b>A</b><span id="sumA"></span></button>
+      <button data-var="B"><b>B</b><span id="sumB"></span></button>
+    </div>
+  </section>
+
+  <div class="progress" id="progress">
+    <div class="row"><h2 id="wTitle"></h2><span class="count" id="wCount"></span></div>
+    <div class="bar"><i id="wBar"></i></div>
+  </div>
+
+  <ol class="list" id="list"></ol>
+
+  <button class="finish" id="finish">Workout abschließen</button>
+  <p class="finish-note">Speichert die Einheit in deinem Verlauf und leert die Häkchen fürs nächste Mal.</p>
+
+  <section class="sec" aria-labelledby="hH">
+    <h2 id="hH">Dein Verlauf</h2>
+    <div class="stats" id="stats"></div>
+    <div id="hist"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="tH">
+    <h2 id="tH">Gut zu wissen</h2>
+    <details class="warn">
+      <summary>Sofort aufhören, wenn …</summary>
+      <p>… dir schwindelig oder schwarz vor Augen wird, du Schmerzen oder Druck in der Brust spürst, ungewöhnlich stark nach Luft ringst oder ein Gelenk stechend wehtut. Hinsetzen, trinken, durchatmen. Wenn es nicht schnell besser wird: ärztliche Hilfe holen.</p>
+      <p>Bevor du startest, sprich am besten kurz mit deiner Ärztin oder deinem Arzt über den Plan. Die verschreiben dir ja auch die Spritze und freuen sich in der Regel über Krafttraining.</p>
+    </details>
+    <details>
+      <summary>Warum überhaupt Krafttraining?</summary>
+      <p>Wenn man schnell abnimmt, verliert der Körper nicht nur Fett, sondern auch Muskeln. Muskeln halten dich kräftig, schützen die Gelenke und verbrennen auch in Ruhe Energie. Das Signal „Ich werde noch gebraucht“ bekommen sie nur über Belastung. Zwei Einheiten pro Woche reichen dafür, wenn du sie regelmäßig machst.</p>
+    </details>
+    <details>
+      <summary>Mit der Spritze trainieren</summary>
+      <p>Iss ein, zwei Stunden vorher eine Kleinigkeit und trink über den Tag genug. Wenig Hunger ist normal, aber mit leerem Tank fühlt sich jede Übung doppelt so schwer an.</p>
+      <p>An Tagen mit Übelkeit oder wenig Energie: nimm die 30-Minuten-Variante oder die leichtere Stufe. Ausgefallen ist schlechter als locker gemacht.</p>
+    </details>
+    <details>
+      <summary>Wie schwer soll es sein?</summary>
+      <p>Der letzte Satz einer Übung sollte sich anstrengend anfühlen. Faustregel: Du hättest noch 2 bis 3 saubere Wiederholungen geschafft, aber nicht 10.</p>
+      <p>Fühlt sich alles locker an, ist das Training zu leicht, um die Muskeln zu halten. Dann ist es Zeit für die nächste Stufe.</p>
+    </details>
+    <details>
+      <summary>Wann steige ich eine Stufe auf?</summary>
+      <p>Wenn du bei einer Übung zwei Einheiten hintereinander alle Sätze sauber geschafft hast und noch Luft hattest, tippst du auf die nächste Stufe. Die Seite merkt sich deine Stufe für jede Übung.</p>
+      <p>Bei den Übungen mit Rucksack kannst du auch einfach mehr Wasserflaschen reinpacken. Ein voller 1,5-Liter-Sixpack sind 9 kg.</p>
+    </details>
+    <details>
+      <summary>Technik und Atmung</summary>
+      <p>Langsam und sauber schlägt schnell und schlampig. Zähl ruhig mit: 2 Sekunden runter, 1 Sekunde hoch.</p>
+      <p>Bei der Anstrengung ausatmen (beim Hochdrücken, Ziehen, Aufstehen), beim Zurückgehen einatmen. Nie die Luft anhalten.</p>
+    </details>
+    <details>
+      <summary>Muskelkater und Pausen</summary>
+      <p>Muskelkater in den ersten Wochen ist normal und nach 1 bis 3 Tagen weg. Lockeres Bewegen hilft, zum Beispiel 15 Minuten Crosstrainer.</p>
+      <p>Lass zwischen zwei Einheiten mindestens zwei Tage Pause, etwa Montag und Donnerstag. Die Muskeln wachsen in der Pause, nicht beim Training.</p>
+    </details>
+    <details>
+      <summary>Was du brauchst</summary>
+      <p>Crosstrainer, Yogamatte, einen stabilen Stuhl (am besten an die Wand gestellt), ein Stück freie Wand, ein Sofa, einen Rucksack und ein paar volle Wasserflaschen.</p>
+    </details>
+  </section>
+
+  <footer>
+    <p>Dein Fortschritt wird nur hier im Browser auf deinem Handy gespeichert. Öffne die Seite also immer im selben Browser.</p>
+    <button class="link" id="reset">Alles zurücksetzen</button>
+  </footer>
+</div>
+
+<div class="timer" id="timer" role="status" aria-live="polite">
+  <div class="tbox">
+    <div class="grow">
+      <div class="lbl" id="tLbl">Pause</div>
+      <div class="num" id="tNum">1:00</div>
+      <div class="tbar"><i id="tBar"></i></div>
+    </div>
+    <button id="tPlus" aria-label="15 Sekunden mehr">+15 s</button>
+    <button class="stop" id="tStop">Fertig</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Strichfiguren ---------- */
+// Gelenke: n=Nacken/Schulter, p=Hüfte, kl/fl=hinteres Knie/Fuß, kr/fr=vorderes Knie/Fuß,
+// el/hl=hinterer Ellbogen/Hand, er/hr=vorderer Ellbogen/Hand, h=Kopf (optional), tl/tr=Zehen (optional)
+const STAND = {n:[55,22],p:[55,48],kl:[56,69],fl:[55,90],el:[56,35],hl:[57,48]};
+
+function fillLR(p){
+  const o = Object.assign({}, p);
+  o.kr = o.kr || o.kl; o.fr = o.fr || o.fl;
+  o.er = o.er || o.el; o.hr = o.hr || o.hl;
+  if(o.tl && o.tr===undefined) o.tr = o.tl;
+  return o;
+}
+function full(p){
+  const o = fillLR(p);
+  if(!o.h){
+    const dx=o.n[0]-o.p[0], dy=o.n[1]-o.p[1], L=Math.hypot(dx,dy)||1;
+    o.h=[o.n[0]+dx/L*8.5, o.n[1]+dy/L*8.5];
+  }
+  return o;
+}
+const pt = a => a[0].toFixed(1)+","+a[1].toFixed(1);
+const f1 = v => (+v).toFixed(1);
+// Jede Figur wird als Liste von Elementen [tag, attribute] beschrieben,
+// damit Start- und Endpose Element für Element ineinander animiert werden können.
+const PL = (pts,cls) => ["polyline",{class:"st "+(cls||""),points:pts.map(pt).join(" ")}];
+
+function propParts(pr, q){
+  let x,y;
+  if(pr.at){ x=q[pr.at][0]+(pr.dx||0); y=q[pr.at][1]+(pr.dy||0); } else { x=pr.x; y=pr.y; }
+  switch(pr.t){
+    case "chair": {
+      const bx = pr.back==="r" ? pr.x+22 : pr.x+2;
+      return [["path",{class:"pr",d:`M${pr.x} 70 H${pr.x+24} M${pr.x+2} 70 V92 M${pr.x+22} 70 V92 M${bx} 70 V44`}]];
+    }
+    case "wall": {
+      let d=`M${pr.x} -12 V92`; for(let yy=-8; yy<=86; yy+=9) d+=` M${pr.x} ${yy} l${pr.s*5} 5`;
+      return [["path",{class:"pr",d}]];
+    }
+    case "sofa":
+      return [["rect",{class:"prf",x:pr.x,y:68,width:40,height:22,rx:4}],["rect",{class:"prf",x:pr.x+28,y:44,width:12,height:46,rx:4}]];
+    case "pack":
+      return [["rect",{class:"wt",x:f1(x-6.5),y:f1(y-7),width:13,height:15,rx:3.5}],
+              ["path",{class:"pr",style:"stroke:#16213E;stroke-width:1.6",d:`M${f1(x-3)} ${f1(y-7)} l0 -2.5 l6 0 l0 2.5`}]];
+    case "bottle":
+      return [["rect",{class:"wt",x:f1(x-2.6),y:f1(y-7),width:5.2,height:13,rx:1.6}]];
+    case "xt":
+      return [["path",{class:"pr",d:"M30 91 H96 M90 91 L86 48 M40 84 H58 M60 84 H78"}],
+              ["polyline",{class:"pr",points:`${pt(q.hl)} 86,50 ${pt(q.hr)}`}],
+              ["circle",{class:"prf",cx:88,cy:82,r:8}]];
+  }
+  return [];
+}
+
+function poseParts(pose, props){
+  const q = full(pose);
+  const out = [["line",{class:"fl",x1:0,y1:92,x2:120,y2:92}]];
+  (props||[]).filter(p=>!p.front).forEach(p=>out.push(...propParts(p,q)));
+  const far = q.front ? "" : "far";
+  const sl = q.sl || q.n, sr = q.sr || q.n;
+  out.push(PL([q.p,q.kl,q.fl],far));
+  if(q.tl) out.push(PL([q.fl,q.tl],far));
+  out.push(PL([sl,q.el,q.hl],far));
+  out.push(PL([q.n,q.p]));
+  if(q.sl) out.push(PL([q.sl,q.sr]));
+  out.push(PL([q.p,q.kr,q.fr]));
+  if(q.tr) out.push(PL([q.fr,q.tr]));
+  out.push(PL([sr,q.er,q.hr]));
+  out.push(["circle",{class:"hd",cx:f1(q.h[0]),cy:f1(q.h[1]),r:6.5}]);
+  (props||[]).filter(p=>p.front).forEach(p=>out.push(...propParts(p,q)));
+  return out;
+}
+const attrStr = o => Object.entries(o).map(([k,v])=>`${k}="${v}"`).join(" ");
+const partsSvg = parts => parts.map(([t,o])=>`<${t} ${attrStr(o)}/>`).join("");
+
+// Bewegung: kurz in der Startposition, dann hin, kurz halten, zurück.
+function animSvg(A, B, tempo){
+  const dur = tempo==="cycle" ? 1.4 : 3.2;
+  const kt = tempo==="cycle" ? "0;0.5;1" : "0;0.12;0.45;0.6;1";
+  const sp = tempo==="cycle" ? ".45 0 .55 1;.45 0 .55 1" : "0 0 1 1;.45 0 .55 1;0 0 1 1;.45 0 .55 1";
+  return A.map(([t,o],i)=>{
+    const ob = B[i][1]; let anim = "";
+    for(const k in o){
+      if(String(o[k])!==String(ob[k]) && k!=="class" && k!=="style"){
+        const v = tempo==="cycle" ? `${o[k]};${ob[k]};${o[k]}` : `${o[k]};${o[k]};${ob[k]};${ob[k]};${o[k]}`;
+        anim += `<animate attributeName="${k}" values="${v}" keyTimes="${kt}" calcMode="spline" keySplines="${sp}" dur="${dur}s" repeatCount="indefinite"/>`;
+      }
+    }
+    return anim ? `<${t} ${attrStr(o)}>${anim}</${t}>` : `<${t} ${attrStr(o)}/>`;
+  }).join("");
+}
+const sameShape = (A,B) => A.length===B.length && A.every(([t,o],i)=>t===B[i][0] && Object.keys(o).join()===Object.keys(B[i][1]).join()
+  && (o.points===undefined || o.points.split(" ").length===B[i][1].points.split(" ").length));
+const REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function figureFor(ex, li){
+  const lv = ex.levels[li];
+  let poses = lv.poses || ex.poses;
+  if(lv.over) poses = poses.map((p,i)=>Object.assign(fillLR(p), lv.over[i]||{}));
+  const props = lv.props || ex.props || [];
+  const label = `Strichfigur: ${ex.name}, ${lv.name}`;
+  if(poses.length===1){
+    return `<svg viewBox="-5 -14 130 110" role="img" aria-label="${label}">${partsSvg(poseParts(poses[0],props))}</svg>`;
+  }
+  const A = poseParts(poses[0],props), B = poseParts(poses[1],props);
+  if(!REDUCED && sameShape(A,B)){
+    return `<svg viewBox="-5 -14 130 110" role="img" aria-label="${label}, animierte Bewegung">${animSvg(A,B,ex.tempo)}</svg>`;
+  }
+  return `<svg viewBox="-5 -14 260 110" role="img" aria-label="${label}, Start- und Endposition">
+    <g>${partsSvg(A)}</g>
+    <path class="arr" d="M117 40 h14 m-5 -5 l5 5 l-5 5"/>
+    <g transform="translate(134 0)">${partsSvg(B)}</g></svg>`;
+}
+
+/* ---------- Übungen ---------- */
+const EX = {
+  xtrainer:{name:"Crosstrainer",tempo:"cycle",mus:"Aufwärmen für Herz, Kreislauf und Gelenke",
+    poses:[{n:[56,14],p:[56,40],kl:[52,62],fl:[44,83],kr:[66,58],fr:[70,83],el:[62,26],hl:[72,36],er:[66,24],hr:[78,30]},
+           {n:[56,14],p:[56,40],kl:[66,58],fl:[70,83],kr:[52,62],fr:[44,83],el:[66,24],hl:[78,30],er:[62,26],hr:[72,36]}],
+    props:[{t:"xt"}],
+    levels:[{name:"Locker",how:"Tempo so, dass du nebenbei noch reden könntest. Die letzte Minute etwas zügiger."}],
+    steps:["Aufsteigen, die beweglichen Griffe locker umfassen, aufrecht stehen.","Gleichmäßig treten, die Arme schieben und ziehen mit.","Widerstand niedrig bis mittel. Du sollst warm werden, nicht fertig."],
+    cue:"Leicht ins Schwitzen kommen reicht völlig."},
+
+  squat:{name:"Kniebeuge",mus:"Oberschenkel und Po",
+    poses:[Object.assign({},STAND),{n:[60,42],p:[42,66],kl:[62,67],fl:[57,90],el:[72,44],hl:[84,42]}],
+    levels:[
+      {name:"Auf den Stuhl",how:"Stuhl hinter dich stellen, langsam hinsetzen, kurz antippen, wieder aufstehen. Nicht reinplumpsen.",props:[{t:"chair",x:16,back:"l"}]},
+      {name:"Frei",how:"Ohne Stuhl, so tief wie es sauber geht. Ziel: Oberschenkel waagerecht."},
+      {name:"Mit Rucksack",how:"Gefüllten Rucksack vor der Brust umarmen und genauso tief gehen.",
+        over:[{el:[62,40],hl:[64,32],er:[62,40],hr:[64,32]},{el:[70,54],hl:[72,46],er:[70,54],hr:[72,46]}],props:[{t:"pack",at:"hr",dx:2,dy:4,front:true}]}],
+    steps:["Füße etwa schulterbreit, Fußspitzen leicht nach außen.","Po nach hinten unten schieben, als würdest du dich setzen. Die Arme gehen dabei nach vorne.","Über die ganze Fußsohle kraftvoll wieder hochdrücken."],
+    cue:"Knie zeigen in Richtung Fußspitzen und knicken nicht nach innen. Die Fersen bleiben am Boden."},
+
+  pushup:{name:"Liegestütz",mus:"Brust, Schultern und Trizeps",
+    levels:[
+      {name:"An der Wand",how:"Hände schulterbreit an die Wand, Füße einen großen Schritt weg.",props:[{t:"wall",x:105,s:1}],
+        poses:[{n:[78.7,28.4],p:[67.8,64],kl:[58.9,77],fl:[50,90],el:[91,29],hl:[103,30]},
+               {n:[89,34.3],p:[74,55.5],kl:[62,72.7],fl:[50,90],el:[95,44],hl:[103,32]}]},
+      {name:"Am Sofa",how:"Hände auf die Sofakante oder einen Stuhl, der an der Wand steht. Je tiefer die Ablage, desto schwerer.",props:[{t:"sofa",x:80}],
+        poses:[{n:[82,42],p:[60.3,60.2],kl:[42.7,75],fl:[25,90],el:[84,54],hl:[86,66]},
+               {n:[85,58],p:[62.2,70.2],kl:[43.6,80],fl:[25,90],el:[76,62],hl:[86,66]}]},
+      {name:"Auf dem Boden",how:"Auf den Knien auf der Matte. Klappen 3 × 12 locker: Knie hoch, volle Liegestütze.",
+        poses:[{n:[88,62],p:[58,79.4],kl:[40,90],fl:[24,82],el:[89,76],hl:[89,90]},
+               {n:[90,80],p:[60.6,86],kl:[40,90],fl:[24,82],el:[80,77],hl:[88,90]}]}],
+    steps:["Hände etwas breiter als die Schultern aufsetzen.","Der Körper bildet eine gerade Linie, Bauch und Po sind fest.","Kontrolliert absenken, bis die Brust fast die Ablage berührt, dann wegdrücken."],
+    cue:"Ellbogen zeigen schräg nach hinten, nicht zur Seite. Kein Hohlkreuz."},
+
+  row:{name:"Rudern vorgebeugt",mus:"Rücken, hintere Schultern und Bizeps",
+    poses:[{n:[70,38],p:[46,52],kl:[58,70],fl:[55,90],el:[70,51],hl:[70,64]},
+           {n:[70,38],p:[46,52],kl:[58,70],fl:[55,90],el:[57,43],hl:[63,55]}],
+    levels:[
+      {name:"Einarmig mit Flasche",how:"Eine Hand stützt sich auf einen Stuhl, die andere zieht eine volle 1,5-Liter-Flasche. Pro Seite zählen.",
+        over:[{el:[78,52],hl:[85,68],er:[70,51],hr:[70,64]},{el:[78,52],hl:[85,68],er:[57,43],hr:[63,55]}],
+        props:[{t:"chair",x:80,back:"r"},{t:"bottle",at:"hr",dy:3,front:true}]},
+      {name:"Rucksack",how:"Rucksack mit 2 bis 4 vollen Flaschen beidhändig an den Trägern halten.",props:[{t:"pack",at:"hr",dy:6,front:true}]},
+      {name:"Schwerer Rucksack",how:"Mehr Flaschen oder Bücher rein und oben 2 Sekunden halten.",props:[{t:"pack",at:"hr",dy:6,front:true}]}],
+    steps:["Leicht in die Knie, Oberkörper mit geradem Rücken nach vorne neigen, etwa 45 Grad.","Das Gewicht hängt unter den Schultern.","Ellbogen eng am Körper Richtung Hüfte ziehen, Schulterblätter zusammen, langsam ablassen."],
+    cue:"Der Rücken bleibt gerade wie ein Brett, kein Katzenbuckel. Blick schräg nach unten."},
+
+  bridge:{name:"Hüftheben",mus:"Po, hintere Oberschenkel und unterer Rücken",
+    poses:[{n:[26,86],p:[56,88],kl:[72,70],fl:[82,90],el:[40,90],hl:[54,90],h:[18,85]},
+           {n:[28,86],p:[53,74],kl:[72,66],fl:[80,90],el:[40,90],hl:[54,90],h:[20,85]}],
+    levels:[
+      {name:"Beidbeinig",how:"Beide Füße bleiben am Boden. Oben 1 Sekunde halten."},
+      {name:"Mit Gewicht",how:"Rucksack oder Wasserflaschen auf die Hüfte legen und mit den Händen festhalten.",props:[{t:"pack",at:"p",dy:-8,front:true}]},
+      {name:"Einbeinig",how:"Ein Bein gestreckt in der Luft, nur mit dem anderen hochdrücken. Pro Seite zählen.",
+        over:[{kr:[72,64],fr:[90,56]},{kr:[72,62],fr:[92,54]}]}],
+    steps:["Auf den Rücken legen, Knie anwinkeln, Füße hüftbreit nah am Po.","Über die Fersen die Hüfte hochdrücken, bis Knie, Hüfte und Schultern eine Linie bilden.","Oben den Po fest anspannen, dann langsam wieder ablegen."],
+    cue:"Die Kraft kommt aus dem Po, nicht aus dem Rücken. Oben nicht überstrecken."},
+
+  lunge:{name:"Ausfallschritt rückwärts",mus:"Oberschenkel, Po und Gleichgewicht",
+    poses:[Object.assign({},STAND,{el:[48,38],hl:[55,47]}),
+           {n:[53,38],p:[52,66],kr:[72,66],fr:[72,90],kl:[42,86],fl:[26,89],el:[46,52],hl:[53,63]}],
+    levels:[
+      {name:"Mit Halt",how:"Eine Hand an einer Stuhllehne, nur so tief wie es angenehm ist.",props:[{t:"chair",x:80,back:"l"}],
+        over:[{er:[69,35],hr:[82,44]},{er:[67,44],hr:[82,45]}]},
+      {name:"Frei",how:"Ohne Halt, Hände an der Hüfte. Das hintere Knie geht fast bis zur Matte."},
+      {name:"Mit Gewicht",how:"In jeder Hand eine volle Wasserflasche, Arme hängen locker.",
+        over:[{el:[56,35],hl:[57,48],er:[56,35],hr:[57,48]},{el:[53,52],hl:[54,64],er:[53,52],hr:[54,64]}],props:[{t:"bottle",at:"hr",dy:4,front:true}]}],
+    steps:["Aufrecht stehen, Füße hüftbreit.","Mit einem Bein einen großen Schritt nach hinten machen und beide Knie beugen.","Über die vordere Ferse zurück in den Stand drücken. Seiten abwechseln."],
+    cue:"Oberkörper bleibt aufrecht, das vordere Knie bleibt über dem Fuß."},
+
+  hinge:{name:"Hüftbeuge (Kreuzheben)",mus:"Po, hintere Oberschenkel und Rücken",
+    poses:[Object.assign({},STAND,{el:[57,36],hl:[60,50]}),
+           {n:[69,44],p:[42,50],kl:[54,70],fl:[55,90],el:[69,57],hl:[69,70]}],
+    levels:[
+      {name:"Ohne Gewicht",how:"Nur die Bewegung lernen. Stell dir vor, du schließt eine Autotür mit dem Po."},
+      {name:"Mit Rucksack",how:"Rucksack an den Trägern vor den Beinen halten und eng an den Beinen entlangführen.",props:[{t:"pack",at:"hr",dy:6,front:true}]},
+      {name:"Einbeinig",how:"Auf einem Bein, das andere geht gestreckt nach hinten. Mit Rucksack, sobald das stabil klappt. Pro Seite zählen.",
+        over:[{},{kl:[26,47],fl:[8,44]}]}],
+    steps:["Hüftbreit stehen, Knie ganz leicht gebeugt.","Po weit nach hinten schieben, der Oberkörper kippt mit geradem Rücken nach vorne.","Sobald du hinten in den Beinen Zug spürst: Po nach vorne schieben und aufrichten."],
+    cue:"Das ist keine Kniebeuge. Die Knie bleiben fast gleich, die Hüfte macht die Arbeit. Rücken immer gerade."},
+
+  press:{name:"Schulterdrücken",mus:"Schultern, Trizeps und Rumpf",
+    poses:[{front:true,n:[60,32],sl:[51,33],sr:[69,33],p:[60,58],kl:[54,74],fl:[52,90],kr:[66,74],fr:[68,90],el:[42,42],hl:[43,29],er:[78,42],hr:[77,29]},
+           {front:true,n:[60,32],sl:[51,33],sr:[69,33],p:[60,58],kl:[54,74],fl:[52,90],kr:[66,74],fr:[68,90],el:[46,19],hl:[48,5],er:[74,19],hr:[72,5]}],
+    props:[{t:"bottle",at:"hl",front:true},{t:"bottle",at:"hr",front:true}],
+    levels:[
+      {name:"Sitzend mit Flaschen",how:"Auf einem Stuhl sitzend, je eine 0,5- bis 1-Liter-Flasche pro Hand."},
+      {name:"Stehend mit Flaschen",how:"Im Stand, mit vollen 1,5-Liter-Flaschen."},
+      {name:"Rucksack",how:"Rucksack mit beiden Händen unten fassen und über den Kopf drücken.",
+        over:[{el:[46,48],hl:[56,42],er:[74,48],hr:[64,42]},{el:[48,18],hl:[56,4],er:[72,18],hr:[64,4]}],
+        props:[{t:"pack",at:"hr",dx:-4,dy:-2,front:true}]}],
+    steps:["Gewichte auf Schulterhöhe, die Ellbogen zeigen nach unten außen.","Gerade nach oben drücken, bis die Arme fast gestreckt sind.","Langsam zurück auf Schulterhöhe."],
+    cue:"Bauch fest, nicht ins Hohlkreuz fallen. Schultern nicht zu den Ohren ziehen."},
+
+  plank:{name:"Unterarmstütz (Plank)",mus:"Bauch, Rumpf und Schultern",
+    levels:[
+      {name:"Auf den Knien",how:"Knie bleiben auf der Matte, Linie von Kopf bis Knie.",
+        poses:[{n:[86,76],p:[58,84],kl:[40,90],fl:[26,82],el:[86,90],hl:[100,90]}]},
+      {name:"Klassisch",how:"Auf Unterarmen und Zehenspitzen, Linie von Kopf bis Ferse.",
+        poses:[{n:[86,74],p:[60.8,80.1],kl:[40.4,85],fl:[20,90],el:[86,90],hl:[100,90]}]},
+      {name:"Mit Schulter-Tippen",how:"Im hohen Stütz mit gestreckten Armen abwechselnd mit einer Hand an die andere Schulter tippen, ohne dass die Hüfte wackelt.",
+        poses:[{n:[84,62],p:[58.4,73.2],kl:[39.2,81.6],fl:[20,90],el:[84,76],hl:[84,90]},
+               {n:[84,62],p:[58.4,73.2],kl:[39.2,81.6],fl:[20,90],el:[84,76],hl:[84,90],er:[96,71],hr:[86,64]}]}],
+    steps:["Unterarme unter die Schultern, Ellbogen auf die Matte.","Der Körper bildet eine gerade Linie.","Bauch und Po anspannen, ruhig weiteratmen und halten."],
+    cue:"Po nicht in die Luft strecken und nicht durchhängen lassen. Lieber kürzer halten, dafür sauber."},
+
+  deadbug:{name:"Dead Bug",mus:"Tiefe Bauchmuskeln und Rumpfstabilität",
+    poses:[{n:[26,86],p:[54,88],kl:[54,66],fl:[72,66],el:[28,74],hl:[28,60],h:[18,85]},
+           {n:[26,86],p:[54,88],kl:[54,66],fl:[72,66],el:[28,74],hl:[28,60],er:[15,77],hr:[3,72],kr:[74,82],fr:[94,86],h:[18,85]}],
+    levels:[
+      {name:"Nur Beine",how:"Die Arme bleiben oben, nur abwechselnd ein Bein langsam ausstrecken.",over:[{},{er:[28,74],hr:[28,60]}]},
+      {name:"Arm und Bein",how:"Gegenüberliegenden Arm und Bein gleichzeitig ausstrecken."},
+      {name:"Extra langsam",how:"Wie Mittel, aber 3 Sekunden raus, 1 Sekunde halten, 3 Sekunden zurück."}],
+    steps:["Auf den Rücken legen, Arme senkrecht nach oben, Knie über der Hüfte im rechten Winkel.","Den unteren Rücken aktiv in die Matte drücken.","Einen Arm nach hinten und das andere Bein nach vorne ausstrecken, zurück, Seite wechseln."],
+    cue:"Der untere Rücken darf sich nicht von der Matte lösen. Wenn doch: kleinere Bewegung."},
+
+  birddog:{name:"Vierfüßlerstand",mus:"Rückenstrecker, Po und Rumpf",
+    poses:[{n:[72,66],p:[40,68],kl:[40,90],fl:[22,90],el:[72,78],hl:[72,90],h:[81,59]},
+           {n:[72,66],p:[40,68],kl:[22,67],fl:[4,67],kr:[40,90],fr:[22,90],el:[72,78],hl:[72,90],er:[86,67],hr:[100,67],h:[81,59]}],
+    levels:[
+      {name:"Nur Arm",how:"Erst nur abwechselnd einen Arm nach vorne strecken, dann nur ein Bein nach hinten.",over:[{},{kl:[40,90],fl:[22,90]}]},
+      {name:"Gegengleich",how:"Rechter Arm und linkes Bein gleichzeitig, dann die andere Seite."},
+      {name:"Mit Halten",how:"Gegengleich und 3 Sekunden ausgestreckt halten, ganz ruhig."}],
+    steps:["Auf alle Viere: Hände unter den Schultern, Knie unter der Hüfte.","Einen Arm nach vorne und das gegenüberliegende Bein nach hinten strecken, bis beide waagerecht sind.","Kurz halten, zurück, Seite wechseln."],
+    cue:"Der Rücken bleibt flach wie ein Tisch, die Hüfte kippt nicht zur Seite."},
+
+  calf:{name:"Wadenheben",mus:"Waden und Fußgelenke",
+    poses:[{n:[55,22],p:[55,48],kl:[56,69],fl:[55,90],tl:[63,90],el:[66,30],hl:[80,30]},
+           {n:[57,15],p:[57,41],kl:[58,62],fl:[57,84],tl:[63,90],el:[68,24],hl:[80,26]}],
+    props:[{t:"wall",x:82,s:1}],
+    levels:[
+      {name:"Beidbeinig",how:"Auf beiden Füßen, langsam hoch und runter."},
+      {name:"Mit Rucksack",how:"Rucksack mit ein paar Flaschen aufsetzen.",props:[{t:"wall",x:82,s:1},{t:"pack",at:"n",dx:-8,dy:10}]},
+      {name:"Einbeinig",how:"Ein Fuß hinter dem anderen Knöchel einhaken, nur auf einem Bein. Pro Seite zählen.",
+        over:[{kl:[54,68],fl:[44,80],tl:null},{kl:[56,61],fl:[46,73],tl:null}]}],
+    steps:["Mit den Händen locker an der Wand abstützen, Füße hüftbreit.","Langsam auf die Zehenspitzen drücken, so hoch es geht.","Oben 1 Sekunde halten, langsam absenken."],
+    cue:"Langsam ist hier besser als schnell. Ganz runter, ganz hoch."},
+
+  wallsit:{name:"Wandsitzen",mus:"Oberschenkel",
+    poses:[{n:[35,40],p:[35,66],kl:[56,66],fl:[56,90],el:[44,56],hl:[54,64]}],
+    props:[{t:"wall",x:30,s:-1}],
+    levels:[
+      {name:"Hoch",how:"Nur leicht in die Knie, etwa halb so tief.",over:[{n:[35,30],p:[35,56],kl:[53,68],fl:[54,90],el:[42,46],hl:[50,58],er:[42,46],hr:[50,58]}]},
+      {name:"Tief",how:"Oberschenkel waagerecht, Knie im rechten Winkel."},
+      {name:"Mit Gewicht",how:"Wie Tief, plus Rucksack auf den Oberschenkeln.",props:[{t:"wall",x:30,s:-1},{t:"pack",x:47,y:58,front:true}]}],
+    steps:["Mit dem Rücken an die Wand lehnen, Füße etwa zwei Fußlängen vor der Wand.","An der Wand nach unten rutschen, bis die Knie gebeugt sind.","Rücken flach an der Wand, Gewicht auf den Fersen und halten."],
+    cue:"Knie bleiben über den Knöcheln, nicht weiter vorne."},
+
+  dips:{name:"Dips am Stuhl",mus:"Trizeps, Brust und Schultern",
+    poses:[{n:[46,40],p:[48,66],kl:[66,62],fl:[68,90],el:[44,54],hl:[42,68]},
+           {n:[48,54],p:[50,80],kl:[70,72],fl:[70,90],el:[34,56],hl:[42,68]}],
+    props:[{t:"chair",x:18,back:"l"}],
+    levels:[
+      {name:"Füße nah",how:"Knie im rechten Winkel, Füße nah am Stuhl. Nur ein Stück runter."},
+      {name:"Füße weiter weg",how:"Füße einen halben Schritt weiter vom Stuhl weg, dadurch tragen die Arme mehr.",
+        over:[{kl:[68,64],fl:[80,90]},{kl:[72,74],fl:[84,90]}]},
+      {name:"Beine gestreckt",how:"Beine fast gestreckt, nur die Fersen am Boden.",
+        over:[{kl:[68,74],fl:[88,86]},{kl:[70,84],fl:[90,90]}]}],
+    steps:["Einen stabilen Stuhl an die Wand stellen. Hände schulterbreit an die Vorderkante der Sitzfläche, Finger zeigen nach vorne.","Po vor den Stuhl schieben, Arme gestreckt.","Ellbogen nach hinten beugen und absenken, bis die Oberarme etwa waagerecht sind, dann hochdrücken."],
+    cue:"Der Po bleibt nah am Stuhl, Schultern weg von den Ohren. Zwickt es vorne in der Schulter: weniger tief."}
+};
+
+/* ---------- Workouts ---------- */
+const W = {
+  "30A":{title:"Workout A, 30 Min",items:[
+    {ex:"xtrainer",sets:1,dose:"5 Min",hold:300,warm:true},
+    {ex:"squat",sets:2,reps:"10",rest:60},
+    {ex:"pushup",sets:2,reps:"8",rest:60},
+    {ex:"row",sets:2,reps:"10",rest:60},
+    {ex:"bridge",sets:2,reps:"12",rest:60},
+    {ex:"plank",sets:2,reps:"20–30 s",hold:30,rest:45}]},
+  "30B":{title:"Workout B, 30 Min",items:[
+    {ex:"xtrainer",sets:1,dose:"5 Min",hold:300,warm:true},
+    {ex:"lunge",sets:2,reps:"8",side:true,rest:60},
+    {ex:"hinge",sets:2,reps:"10",rest:60},
+    {ex:"press",sets:2,reps:"10",rest:60},
+    {ex:"row",sets:2,reps:"10",rest:60},
+    {ex:"deadbug",sets:2,reps:"6",side:true,rest:45}]},
+  "60A":{title:"Workout A, 60 Min",items:[
+    {ex:"xtrainer",sets:1,dose:"10 Min",hold:600,warm:true},
+    {ex:"squat",sets:3,reps:"10",rest:90},
+    {ex:"pushup",sets:3,reps:"8",rest:90},
+    {ex:"row",sets:3,reps:"10",rest:90},
+    {ex:"lunge",sets:3,reps:"8",side:true,rest:75},
+    {ex:"bridge",sets:3,reps:"12",rest:75},
+    {ex:"calf",sets:2,reps:"15",rest:45},
+    {ex:"plank",sets:3,reps:"30 s",hold:30,rest:45},
+    {ex:"deadbug",sets:2,reps:"8",side:true,rest:45},
+    {ex:"xtrainer",sets:1,dose:"5 Min",hold:300,cool:true}]},
+  "60B":{title:"Workout B, 60 Min",items:[
+    {ex:"xtrainer",sets:1,dose:"10 Min",hold:600,warm:true},
+    {ex:"hinge",sets:3,reps:"10",rest:90},
+    {ex:"press",sets:3,reps:"10",rest:90},
+    {ex:"row",sets:3,reps:"10",rest:90},
+    {ex:"wallsit",sets:3,reps:"30 s",hold:30,rest:60},
+    {ex:"dips",sets:3,reps:"8",rest:75},
+    {ex:"bridge",sets:3,reps:"12",rest:75},
+    {ex:"birddog",sets:3,reps:"8",side:true,rest:45},
+    {ex:"plank",sets:2,reps:"30 s",hold:30,rest:45},
+    {ex:"xtrainer",sets:1,dose:"5 Min",hold:300,cool:true}]}
+};
+
+/* ---------- State ---------- */
+const KEY="felix-workout-v1";
+let S;
+try{ S=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ S=null; }
+if(!S) S={levels:{},checks:{},history:[],dur:"30",v:null};
+S.levels=S.levels||{}; S.checks=S.checks||{}; S.history=S.history||[];
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+
+function nextVar(){
+  const last=S.history[S.history.length-1];
+  return last ? (last.w.slice(-1)==="A"?"B":"A") : "A";
+}
+if(!S.v) S.v=nextVar();
+const wid=()=>S.dur+S.v;
+const lvlOf=id=>{ const n=EX[id].levels.length; const l=S.levels[id]; return (l==null? Math.min(1,n-1) : Math.min(l,n-1)); };
+// Start-Stufe: Mittel; bei Liegestütz und Dips lieber leicht starten
+["pushup","dips","plank"].forEach(id=>{ if(S.levels[id]==null) S.levels[id]=0; });
+
+function weekKey(d){
+  const x=new Date(d); x.setHours(0,0,0,0);
+  const day=(x.getDay()+6)%7; x.setDate(x.getDate()-day); return x.toISOString().slice(0,10);
+}
+
+/* ---------- Render ---------- */
+const $=id=>document.getElementById(id);
+const CHECK='<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5l4 4 8-9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CLOCK='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M10 7.5V11l2.5 1.6M8 2h4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+
+function getChecks(){
+  const w=W[wid()];
+  let c=S.checks[wid()];
+  if(!c || c.length!==w.items.length) c=S.checks[wid()]=w.items.map(it=>Array(it.sets).fill(false));
+  return c;
+}
+
+function renderWeek(){
+  const wk=weekKey(new Date());
+  const n=S.history.filter(h=>weekKey(h.d)===wk).length;
+  const nv=nextVar();
+  let msg = n>=2 ? "Wochenziel geschafft. Stark!" : (n===1 ? "Noch eine Einheit diese Woche." : "Diese Woche geht's los.");
+  $("week").innerHTML=`<div class="dots" aria-hidden="true"><span class="dot ${n>=1?"on":""}"></span><span class="dot ${n>=2?"on":""}"></span></div>
+    <p><strong>${Math.min(n,2)} von 2</strong> Einheiten diese Woche<small>${msg} Als Nächstes ist Workout ${nv} dran.</small></p>`;
+}
+
+function renderChooser(){
+  document.querySelectorAll("#segDur button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.dur===S.dur)));
+  const nv=nextVar();
+  document.querySelectorAll("#segVar button").forEach(b=>{
+    b.setAttribute("aria-pressed",String(b.dataset.var===S.v));
+    const old=b.querySelector(".badge"); if(old) old.remove();
+    if(b.dataset.var===nv){ const s=document.createElement("em"); s.className="badge"; s.textContent="ist dran"; s.style.fontStyle="normal"; b.appendChild(s); }
+  });
+  const sum=v=>{ const w=W[S.dur+v]; const n=w.items.filter(i=>!i.warm&&!i.cool).length; return `${n} Übungen`; };
+  $("sumA").textContent=sum("A")+", Beine, Drücken, Ziehen";
+  $("sumB").textContent=sum("B")+", Hüfte, Schultern, Rücken";
+}
+
+function renderList(){
+  const w=W[wid()], c=getChecks();
+  $("wTitle").textContent=w.title;
+  $("list").innerHTML=w.items.map((it,i)=>{
+    const ex=EX[it.ex], li=lvlOf(it.ex), lv=ex.levels[li];
+    const done=c[i].every(Boolean);
+    const tag = it.warm?"Aufwärmen":(it.cool?"Auslaufen":"Übung "+w.items.slice(0,i+1).filter(x=>!x.warm&&!x.cool).length);
+    const dose = it.dose || `${it.sets} × ${it.reps}`;
+    const sub = it.dose ? "" : (it.side||(it.ex==="row"&&li===0)||(it.ex==="bridge"&&li===2)||(it.ex==="hinge"&&li===2)||(it.ex==="calf"&&li===2) ? "pro Seite" : (it.hold?"halten":"Wiederholungen"));
+    const lvBtns = ex.levels.length>1 ? `<div class="lv" role="group" aria-label="Stufe wählen">${["Leicht","Mittel","Schwer"].map((t,k)=>`<button data-i="${i}" data-lv="${k}" aria-pressed="${k===li}">${t}</button>`).join("")}</div>` : "";
+    const sets = c[i].map((on,k)=>`<button class="set" data-i="${i}" data-s="${k}" aria-pressed="${on}" aria-label="Satz ${k+1} ${on?"erledigt":"offen"}">${on?CHECK:(it.sets>1?k+1:"")}${!on&&it.sets===1?"Erledigt":""}</button>`).join("");
+    const tb = it.hold ? `<button class="tbtn" data-hold="${it.hold}" data-name="${ex.name}">${CLOCK}${fmt(it.hold)}</button>`
+                       : `<button class="tbtn" data-rest="${it.rest}">${CLOCK}Pause ${it.rest} s</button>`;
+    return `<li class="ex ${done?"done":""}">
+      <div class="fig"><span class="tag">${done?"Erledigt":tag}</span>${figureFor(ex,li)}</div>
+      <div class="exb">
+        <div class="exh"><h3>${ex.name}</h3><div class="dose">${dose}${sub?`<small>${sub}</small>`:""}</div></div>
+        <p class="mus">${ex.mus}</p>
+        ${lvBtns}
+        <p class="lvd"><b>${lv.name}:</b> ${lv.how}</p>
+        <ol class="steps">${ex.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+        <p class="cue">${ex.cue}</p>
+        <div class="sets">${sets}${tb}</div>
+      </div></li>`;
+  }).join("");
+  renderProgress();
+}
+
+function renderProgress(){
+  const c=getChecks(); const all=c.flat(); const n=all.filter(Boolean).length;
+  $("wCount").textContent=`${n} von ${all.length} Sätzen`;
+  $("wBar").style.width=(all.length? n/all.length*100:0)+"%";
+}
+
+function renderHistory(){
+  const h=S.history;
+  const weeks={}; h.forEach(e=>{ const k=weekKey(e.d); weeks[k]=(weeks[k]||0)+1; });
+  // Serie: Wochen in Folge mit 2 Einheiten (laufende Woche zählt erst, wenn sie voll ist)
+  let streak=0; const d=new Date(); let k=weekKey(d);
+  if((weeks[k]||0)<2){ d.setDate(d.getDate()-7); k=weekKey(d); }
+  while((weeks[k]||0)>=2){ streak++; d.setDate(d.getDate()-7); k=weekKey(d); }
+  $("stats").innerHTML=`<div><b>${h.length}</b><span>Einheiten insgesamt</span></div><div><b>${streak}</b><span>${streak===1?"Woche":"Wochen"} in Folge mit 2 Einheiten</span></div>`;
+  if(!h.length){ $("hist").innerHTML=`<p class="empty">Noch leer. Nach deinem ersten Workout steht es hier.</p>`; return; }
+  const days=["So","Mo","Di","Mi","Do","Fr","Sa"];
+  $("hist").innerHTML=`<ul class="hist">${h.slice(-10).reverse().map(e=>{const x=new Date(e.d);
+    return `<li><span class="w">${W[e.w]?W[e.w].title:e.w}</span><span class="d">${days[x.getDay()]}, ${String(x.getDate()).padStart(2,"0")}.${String(x.getMonth()+1).padStart(2,"0")}.</span></li>`;}).join("")}</ul>
+    <button class="link" id="undo">Letzten Eintrag löschen</button>`;
+  $("undo").onclick=()=>{ if(confirm("Letzten Eintrag aus dem Verlauf löschen?")){ S.history.pop(); save(); renderAll(); } };
+}
+
+function renderAll(){ renderWeek(); renderChooser(); renderList(); renderHistory(); }
+
+/* ---------- Timer ---------- */
+let T=null, tLeft=0, tTotal=0, actx=null;
+function beep(){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.25,0.5].forEach(o=>{ const g=actx.createGain(), os=actx.createOscillator();
+      os.frequency.value=880; os.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.25,actx.currentTime+o); g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+o+0.2);
+      os.start(actx.currentTime+o); os.stop(actx.currentTime+o+0.22); });
+  }catch(e){}
+  if(navigator.vibrate) navigator.vibrate([200,100,200]);
+}
+function tDraw(){ $("tNum").textContent=fmt(Math.max(0,tLeft)); $("tBar").style.width=(tTotal?Math.max(0,tLeft)/tTotal*100:0)+"%"; }
+function startTimer(sec,label){
+  try{ actx=actx||new (window.AudioContext||window.webkitAudioContext)(); if(actx.state==="suspended") actx.resume(); }catch(e){}
+  clearInterval(T); tLeft=tTotal=sec; $("tLbl").textContent=label; $("tStop").textContent="Stopp";
+  $("timer").classList.remove("ended"); $("timer").classList.add("show"); tDraw();
+  const end=Date.now()+sec*1000;
+  T=setInterval(()=>{ tLeft=Math.round((end+ (tTotal-sec)*1000 - Date.now())/1000); tDraw();
+    if(tLeft<=0){ clearInterval(T); T=null; beep(); $("timer").classList.add("ended");
+      $("tLbl").textContent= label.startsWith("Pause")?"Pause vorbei":"Geschafft"; $("tNum").textContent="Weiter!"; $("tStop").textContent="OK"; }
+  },250);
+}
+function stopTimer(){ clearInterval(T); T=null; $("timer").classList.remove("show","ended"); }
+$("tStop").onclick=stopTimer;
+$("tPlus").onclick=()=>{ if(T){ tTotal+=15; tDraw(); } };
+
+/* ---------- Events ---------- */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.dur){ S.dur=b.dataset.dur; save(); renderChooser(); renderList(); return; }
+  if(b.dataset.var){ S.v=b.dataset.var; save(); renderChooser(); renderList(); return; }
+  if(b.dataset.lv!=null && b.dataset.i!=null){
+    const it=W[wid()].items[+b.dataset.i]; S.levels[it.ex]=+b.dataset.lv; save(); renderList(); return; }
+  if(b.classList.contains("set")){
+    const i=+b.dataset.i, s=+b.dataset.s, c=getChecks(), it=W[wid()].items[i];
+    c[i][s]=!c[i][s]; save(); renderList();
+    if(c[i][s]){
+      const allDone=c.flat().every(Boolean);
+      if(allDone) toast("Alles abgehakt! Jetzt unten abschließen.");
+      else if(it.rest && s<it.sets-1) startTimer(it.rest,"Pause, dann Satz "+(s+2));
+      else if(it.rest && c[i].every(Boolean)) startTimer(Math.min(it.rest,60),"Pause, dann nächste Übung");
+    }
+    return; }
+  if(b.dataset.rest){ startTimer(+b.dataset.rest,"Pause"); return; }
+  if(b.dataset.hold){ startTimer(+b.dataset.hold,b.dataset.name); return; }
+});
+
+$("finish").onclick=()=>{
+  const c=getChecks(); const n=c.flat().filter(Boolean).length;
+  if(n===0 && !confirm("Du hast noch nichts abgehakt. Trotzdem als erledigt speichern?")) return;
+  S.history.push({d:new Date().toISOString(),w:wid()});
+  delete S.checks[wid()];
+  S.v=nextVar(); save(); stopTimer(); renderAll();
+  toast(n===c.flat().length?"Workout gespeichert. Stark, Felix!":"Gespeichert. Jede Einheit zählt!");
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+$("reset").onclick=()=>{ if(confirm("Wirklich alles löschen, inklusive Verlauf und Stufen?")){ try{localStorage.removeItem(KEY);}catch(e){} location.reload(); } };
+
+let toastT;
+function toast(m){ const t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2600); }
+
+renderAll();
+})();
+</script>
+</body>
+</html>
